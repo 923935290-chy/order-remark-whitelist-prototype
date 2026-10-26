@@ -41,7 +41,7 @@
         <div class="copy-grid">
           <section class="copy-section">
             <label class="form-label" for="orderHint"><span class="required">*</span>订单确认页提示文案</label>
-            <div class="text-field"><input id="orderHint" maxlength="30" placeholder="请输入订单确认页展示的提示文案"><span id="orderHintCount" class="counter">0/30</span></div>
+            <div class="text-field"><input id="orderHint" maxlength="10" placeholder="请输入订单确认页展示的提示文案"><span id="orderHintCount" class="counter">0/10</span></div>
             <div id="orderHintError" class="error-text">请输入订单确认页提示文案</div>
             <figure class="example"><img src="assets/order-confirm-hint-example.jpg" alt="订单确认页提示文案位置示意图"></figure>
           </section>
@@ -91,8 +91,10 @@
     function closeModal(){$('#settingsBackdrop').classList.remove('open');activeProduct=null;clearErrors()}
     function save(){
       const orderHint=$('#orderHint').value.trim();const inputHint=$('#inputHint').value.trim();clearErrors();let valid=true;
-      if(!orderHint){$('#orderHint').classList.add('error');$('#orderHintError').classList.add('show');valid=false}
-      if(!inputHint){$('#inputHint').classList.add('error');$('#inputHintError').classList.add('show');valid=false}
+      if(!orderHint){$('#orderHintError').textContent='请输入订单确认页提示文案';$('#orderHint').classList.add('error');$('#orderHintError').classList.add('show');valid=false}
+      else if(orderHint.length>10){$('#orderHintError').textContent='最多输入10个字符';$('#orderHint').classList.add('error');$('#orderHintError').classList.add('show');valid=false}
+      if(!inputHint){$('#inputHintError').textContent='请输入备注输入框占位文案';$('#inputHint').classList.add('error');$('#inputHintError').classList.add('show');valid=false}
+      else if(inputHint.length>60){$('#inputHintError').textContent='最多输入60个字符';$('#inputHint').classList.add('error');$('#inputHintError').classList.add('show');valid=false}
       if(!valid)return;
       settings.set(activeProduct.id,{required:$('input[name="requiredRemark"]:checked').value==='yes',orderHint,inputHint});
       closeModal();toast('备注设置已保存');
